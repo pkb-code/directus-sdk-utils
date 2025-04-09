@@ -1,0 +1,52 @@
+{
+  "name": "@altipla/directus-sdk-utils",
+  "version": "0.0.0",
+  "description": "Helpers to build Directus extensions.",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "pkgroll",
+    "lint": "tsc --noEmit && eslint src",
+    "fix": "eslint --fix --ext .ts src",
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/altipla-consulting/directus-sdk-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/altipla-consulting/directus-sdk-utils/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/altipla-consulting/directus-sdk-utils#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Altipla Consulting",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@directus/api": "^26.0.1",
+    "@directus/errors": "^2.0.1",
+    "@directus/extensions": "^3.0.4",
+    "@directus/types": "^13.1.0",
+    "@types/node": "^22.14.0",
+    "eslint": "^9.24.0",
+    "pkgroll": "^2.12.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "zod": "^3.24.2"
+  },
+  "pnpm": {
+    "neverBuiltDependencies": []
+  },
+  "peerDependencies": {
+    "@directus/api": "^26.0.1",
+    "@directus/errors": "^2.0.1",
+    "@directus/extensions": "^3.0.4",
+    "@directus/types": "^13.1.0"
+  }
+}

@@ -1,2 +1,9 @@
-# directus-extension-sdk
-Custom SDK to help build Directus extensions.
+# directus-sdk-utils
+
+Helpers to build Directus extensions.
+
+## Install
+
+```shell
+npm i -D @altipla/directus-sdk-utils
+```
