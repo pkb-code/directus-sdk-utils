@@ -6,7 +6,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "pkgroll",
+    "build": "tsup src/index.ts --dts --format esm",
     "lint": "tsc --noEmit && eslint src",
     "fix": "eslint --fix --ext .ts src",
     "prepublishOnly": "pnpm build",
@@ -35,12 +35,12 @@
     "@directus/types": "^13.1.0",
     "@types/node": "^22.14.0",
     "eslint": "^9.24.0",
-    "pkgroll": "^2.12.1",
-    "typescript": "^5.8.3"
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3",
+    "zod": "^3.24.2"
   },
   "dependencies": {
-    "@directus/errors": "^2.0.1",
-    "zod": "^3.24.2"
+    "@directus/errors": "^2.0.1"
   },
   "pnpm": {
     "neverBuiltDependencies": []

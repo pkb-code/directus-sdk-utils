@@ -4,7 +4,7 @@
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
