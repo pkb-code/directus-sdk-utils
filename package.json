@@ -9,7 +9,7 @@
     "build": "pkgroll",
     "lint": "tsc --noEmit && eslint src",
     "fix": "eslint --fix --ext .ts src",
-    "test": ""
+    "test": "echo 0"
   },
   "repository": {
     "type": "git",
@@ -28,8 +28,8 @@
   "author": "Altipla Consulting",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@altipla/eslint-config-ts": "^1.0.5",
     "@directus/api": "^26.0.1",
-    "@directus/errors": "^2.0.1",
     "@directus/extensions": "^3.0.4",
     "@directus/types": "^13.1.0",
     "@types/node": "^22.14.0",
@@ -38,15 +38,10 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@directus/errors": "^2.0.1",
     "zod": "^3.24.2"
   },
   "pnpm": {
     "neverBuiltDependencies": []
-  },
-  "peerDependencies": {
-    "@directus/api": "^26.0.1",
-    "@directus/errors": "^2.0.1",
-    "@directus/extensions": "^3.0.4",
-    "@directus/types": "^13.1.0"
   }
 }
