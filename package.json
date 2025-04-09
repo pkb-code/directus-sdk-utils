@@ -9,6 +9,7 @@
     "build": "pkgroll",
     "lint": "tsc --noEmit && eslint src",
     "fix": "eslint --fix --ext .ts src",
+    "prepublishOnly": "pnpm build",
     "test": "echo 0"
   },
   "repository": {
