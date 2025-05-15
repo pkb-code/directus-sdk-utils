@@ -1,4 +1,7 @@
 import type { ItemsService } from '@directus/api/services/items'
+import type { FilesService } from '@directus/api/services/files'
+import type { FoldersService } from '@directus/api/services/folders'
+import type { TranslationsService } from '@directus/api/services/translations'
 import { createError } from '@directus/errors'
 import type { ApiExtensionContext, EndpointExtensionContext, HookConfig as DirectusHookConfig, OperationContext, OperationHandler } from '@directus/extensions'
 import type { Accountability, Item } from '@directus/types'
@@ -91,7 +94,7 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
                 ...hookContext,
                 ...context,
                 _payload: payload,
-              },
+              }
             )
           } catch (err: unknown) {
             logError(hookContext.logger, err)
@@ -111,7 +114,7 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
                   ...hookContext,
                   ...context,
                   _payload: meta.payload,
-                },
+                }
               )
             } catch (err: unknown) {
               logError(hookContext.logger, err)
@@ -147,7 +150,17 @@ export function readHookPayload<T extends z.AnyZodObject>(context: HookContext, 
 
 export async function getTranslationsService(context: EndpointExtensionContext) {
   let { TranslationsService } = context.services
-  return new TranslationsService({ schema: await context.getSchema() })
+  return new TranslationsService({ schema: await context.getSchema() }) as TranslationsService
+}
+
+export async function getFilesService(context: BasicContext) {
+  let { FilesService } = context.services
+  return new FilesService({ schema: await context.getSchema() }) as FilesService
+}
+
+export async function getFoldersService(context: BasicContext) {
+  let { FoldersService } = context.services
+  return new FoldersService({ schema: await context.getSchema() }) as FoldersService
 }
 
 type Ext = {
