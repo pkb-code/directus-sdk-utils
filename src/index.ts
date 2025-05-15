@@ -105,10 +105,14 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
         register.action(event, (meta, context) => {
           async function run() {
             try {
+              let keys = meta.keys ?? []
+              if (meta.key) {
+                keys.push(meta.key)
+              }
               await handler(
                 {
                   ...meta,
-                  keys: meta.keys ?? [],
+                  keys,
                 } as Meta,
                 {
                   ...hookContext,
