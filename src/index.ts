@@ -154,7 +154,7 @@ export function readHookPayload<T extends z.AnyZodObject>(context: HookContext, 
 
 export async function getTranslationsService(context: EndpointExtensionContext) {
   let { TranslationsService } = context.services
-  return new TranslationsService({ schema: await context.getSchema() }) as TranslationsService & {
+  return new TranslationsService({ schema: await context.getSchema() }) as Omit<TranslationsService, 'translationKeyExists'> & {
     // This is a private very useful method that we want to expose.
     translationKeyExists(key: string, language: string): Promise<boolean>
   }
