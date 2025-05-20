@@ -1,6 +1,6 @@
 {
   "name": "@altipla/directus-sdk-utils",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Helpers to build Directus extensions.",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
