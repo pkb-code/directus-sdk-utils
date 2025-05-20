@@ -2,6 +2,7 @@ import type { ItemsService } from '@directus/api/services/items'
 import type { FilesService } from '@directus/api/services/files'
 import type { FoldersService } from '@directus/api/services/folders'
 import type { TranslationsService } from '@directus/api/services/translations'
+import type { NotificationsService } from '@directus/api/services/notifications'
 import { createError } from '@directus/errors'
 import type { ApiExtensionContext, EndpointExtensionContext, HookConfig as DirectusHookConfig, OperationContext, OperationHandler } from '@directus/extensions'
 import type { Accountability, Item } from '@directus/types'
@@ -94,7 +95,7 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
                 ...hookContext,
                 ...context,
                 _payload: payload,
-              }
+              },
             )
           } catch (err: unknown) {
             logError(hookContext.logger, err)
@@ -118,7 +119,7 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
                   ...hookContext,
                   ...context,
                   _payload: meta.payload,
-                }
+                },
               )
             } catch (err: unknown) {
               logError(hookContext.logger, err)
@@ -168,6 +169,11 @@ export async function getFilesService(context: BasicContext) {
 export async function getFoldersService(context: BasicContext) {
   let { FoldersService } = context.services
   return new FoldersService({ schema: await context.getSchema() }) as FoldersService
+}
+
+export async function getNotificationsService(context: BasicContext) {
+  let { NotificationsService } = context.services
+  return new NotificationsService({ schema: await context.getSchema() }) as NotificationsService
 }
 
 type Ext = {
