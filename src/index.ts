@@ -20,8 +20,8 @@ export async function createItemsService<T extends Item>({ services, getSchema, 
   })
 }
 
-export async function createAccountableItemsService({ services, accountability, getSchema, database }: AccountableContext, table: string) {
-  const cls: typeof ItemsService = services.ItemsService
+export async function createAccountableItemsService<T extends Item>({ services, accountability, getSchema, database }: AccountableContext, table: string) {
+  const cls: typeof ItemsService<T> = services.ItemsService
   return new cls(table, {
     schema: await getSchema(),
     knex: database,
