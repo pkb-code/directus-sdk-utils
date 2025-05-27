@@ -5,15 +5,15 @@ import type { TranslationsService } from '@directus/api/services/translations'
 import type { NotificationsService } from '@directus/api/services/notifications'
 import { createError } from '@directus/errors'
 import type { ApiExtensionContext, EndpointExtensionContext, HookConfig as DirectusHookConfig, OperationContext, OperationHandler } from '@directus/extensions'
-import type { Accountability, Item } from '@directus/types'
+import type { Accountability } from '@directus/types'
 import type { z } from 'zod'
 
-type BasicContext = ApiExtensionContext
-type AccountableContext = ApiExtensionContext & {
+export type BasicContext = ApiExtensionContext
+export type AccountableContext = ApiExtensionContext & {
   accountability: Accountability | null
 }
 
-export async function createItemsService<T extends Item>({ services, getSchema, database }: BasicContext, table: string) {
+export async function createItemsService<T extends object>({ services, getSchema, database }: BasicContext, table: string) {
   const cls: typeof ItemsService<T> = services.ItemsService
   return new cls(table, {
     schema: await getSchema(),
@@ -21,7 +21,7 @@ export async function createItemsService<T extends Item>({ services, getSchema, 
   })
 }
 
-export async function createAccountableItemsService<T extends Item>({ services, accountability, getSchema, database }: AccountableContext, table: string) {
+export async function createAccountableItemsService<T extends object>({ services, accountability, getSchema, database }: AccountableContext, table: string) {
   const cls: typeof ItemsService<T> = services.ItemsService
   return new cls(table, {
     schema: await getSchema(),
@@ -30,7 +30,7 @@ export async function createAccountableItemsService<T extends Item>({ services, 
   })
 }
 
-export async function createOperationItemsService<T extends Item>({ services, getSchema, database }: BasicContext, table: string, operation: string) {
+export async function createOperationItemsService<T extends object>({ services, getSchema, database }: BasicContext, table: string, operation: string) {
   const cls: typeof ItemsService<T> = services.ItemsService
   return new cls(table, {
     schema: await getSchema(),
@@ -95,7 +95,7 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
                 ...hookContext,
                 ...context,
                 _payload: payload,
-              },
+              }
             )
           } catch (err: unknown) {
             logError(hookContext.logger, err)
@@ -119,7 +119,7 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
                   ...hookContext,
                   ...context,
                   _payload: meta.payload,
-                },
+                }
               )
             } catch (err: unknown) {
               logError(hookContext.logger, err)
