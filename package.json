@@ -30,6 +30,8 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@altipla/eslint-config-ts": "^1.0.5",
+    "@types/lodash-es": "^4.17.12",
+    "lodash-es": "^4.17.21",
     "@directus/api": "^26.0.1",
     "@directus/extensions": "^3.0.4",
     "@directus/types": "^13.1.0",

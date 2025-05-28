@@ -1,12 +1,13 @@
 import type { ItemsService } from '@directus/api/services/items'
 import type { FilesService } from '@directus/api/services/files'
-import type { FoldersService } from '@directus/api/services/folders'
+import type { FoldersService as DirectusFoldersService } from '@directus/api/services/folders'
 import type { TranslationsService } from '@directus/api/services/translations'
 import type { NotificationsService } from '@directus/api/services/notifications'
 import { createError } from '@directus/errors'
 import type { ApiExtensionContext, EndpointExtensionContext, HookConfig as DirectusHookConfig, OperationContext, OperationHandler } from '@directus/extensions'
 import type { Accountability } from '@directus/types'
 import type { z } from 'zod'
+import { merge } from 'lodash-es'
 
 export type BasicContext = ApiExtensionContext
 export type AccountableContext = ApiExtensionContext & {
@@ -95,7 +96,7 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
                 ...hookContext,
                 ...context,
                 _payload: payload,
-              }
+              },
             )
           } catch (err: unknown) {
             logError(hookContext.logger, err)
@@ -119,7 +120,7 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
                   ...hookContext,
                   ...context,
                   _payload: meta.payload,
-                }
+                },
               )
             } catch (err: unknown) {
               logError(hookContext.logger, err)
@@ -166,9 +167,18 @@ export async function createFilesService(context: BasicContext) {
   return new FilesService({ schema: await context.getSchema() }) as FilesService
 }
 
-export async function createFoldersService(context: BasicContext) {
-  let { FoldersService } = context.services
-  return new FoldersService({ schema: await context.getSchema() }) as FoldersService
+export type FoldersService<T extends object> = DirectusFoldersService & ItemsService<T, string>
+export async function createFoldersService<T extends object>({ services, getSchema, database }: BasicContext): Promise<FoldersService<T>> {
+  let { FoldersService } = services.FoldersService
+  const cls: typeof ItemsService<T> = FoldersService
+
+  return merge(
+    FoldersService,
+    new cls('directus_folders', {
+      schema: await getSchema(),
+      knex: database,
+    }),
+  )
 }
 
 export async function createNotificationsService(context: BasicContext) {
