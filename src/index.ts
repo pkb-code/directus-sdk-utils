@@ -177,7 +177,7 @@ export async function createNotificationsService(context: BasicContext) {
 }
 
 type Ext = {
-  type: 'altec'
+  type: 'directus-sdk-utils'
   collection: string
   field: string
   message: string
