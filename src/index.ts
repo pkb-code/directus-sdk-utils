@@ -153,7 +153,7 @@ export function readHookPayload<T extends z.AnyZodObject>(context: HookContext, 
   return schema.passthrough().parse(context._payload) as z.infer<T>
 }
 
-export async function getTranslationsService(context: EndpointExtensionContext) {
+export async function createTranslationsService(context: EndpointExtensionContext) {
   let { TranslationsService } = context.services
   return new TranslationsService({ schema: await context.getSchema() }) as Omit<TranslationsService, 'translationKeyExists'> & {
     // This is a private very useful method that we want to expose.
@@ -161,17 +161,17 @@ export async function getTranslationsService(context: EndpointExtensionContext) 
   }
 }
 
-export async function getFilesService(context: BasicContext) {
+export async function createFilesService(context: BasicContext) {
   let { FilesService } = context.services
   return new FilesService({ schema: await context.getSchema() }) as FilesService
 }
 
-export async function getFoldersService(context: BasicContext) {
+export async function createFoldersService(context: BasicContext) {
   let { FoldersService } = context.services
   return new FoldersService({ schema: await context.getSchema() }) as FoldersService
 }
 
-export async function getNotificationsService(context: BasicContext) {
+export async function createNotificationsService(context: BasicContext) {
   let { NotificationsService } = context.services
   return new NotificationsService({ schema: await context.getSchema() }) as NotificationsService
 }
