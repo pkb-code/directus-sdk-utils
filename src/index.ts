@@ -6,7 +6,7 @@ import type { NotificationsService } from '@directus/api/services/notifications'
 import { createError } from '@directus/errors'
 import type { ApiExtensionContext, EndpointExtensionContext, HookConfig as DirectusHookConfig, OperationContext, OperationHandler } from '@directus/extensions'
 import type { Accountability } from '@directus/types'
-import type { z } from 'zod'
+import { z } from 'zod'
 
 export type BasicContext = ApiExtensionContext
 export type AccountableContext = ApiExtensionContext & {
@@ -140,17 +140,22 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
     })
   }
 }
-
-export function readTriggerPayload<T extends z.AnyZodObject>(context: OperationContext, schema: T) {
-  return schema.passthrough().parse((context.data as any).$trigger.payload) as z.infer<T>
-}
-
 export function readTriggerKeys(context: OperationContext) {
   return ((context.data as any).$trigger.keys as string[]) ?? []
 }
 
-export function readHookPayload<T extends z.AnyZodObject>(context: HookContext, schema: T) {
-  return schema.passthrough().parse(context._payload) as z.infer<T>
+type PayloadSchema = z.AnyZodObject | z.ZodUnion<[z.AnyZodObject, ...z.AnyZodObject[]]>
+export function readTriggerPayload<T extends PayloadSchema>(context: OperationContext, schema: T) {
+  if (schema instanceof z.ZodObject) {
+    return schema.passthrough().parse((context.data as any).$trigger.payload) as z.infer<T>
+  }
+  return z.union(schema.options.map((option) => option.passthrough()) as any).parse((context.data as any).$trigger.payload) as z.infer<T>
+}
+export function readHookPayload<T extends PayloadSchema>(context: HookContext, schema: T) {
+  if (schema instanceof z.ZodObject) {
+    return schema.passthrough().parse(context._payload) as z.infer<T>
+  }
+  return z.union(schema.options.map((option) => option.passthrough()) as any).parse(context._payload) as z.infer<T>
 }
 
 export async function createTranslationsService(context: EndpointExtensionContext) {
