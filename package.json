@@ -20,7 +20,8 @@
     "url": "https://github.com/altipla-consulting/directus-sdk-utils/issues"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "homepage": "https://github.com/altipla-consulting/directus-sdk-utils#readme",
   "publishConfig": {
