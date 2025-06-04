@@ -6,7 +6,7 @@ function makePayload(payload: Record<string, any>) {
   return { _payload: payload } as any
 }
 
-test('read hook payload object', () => {
+test('readHookPayload object', () => {
   const schema = z.object({
     foo: z.string(),
   })
@@ -15,7 +15,7 @@ test('read hook payload object', () => {
   })
 })
 
-test('read hook payload object passthrough', () => {
+test('readHookPayload object passthrough', () => {
   const schema = z.object({
     foo: z.string(),
   })
@@ -25,14 +25,14 @@ test('read hook payload object passthrough', () => {
   })
 })
 
-test('read hook payload object fail', () => {
+test('readHookPayload object fail', () => {
   const schema = z.object({
     foo: z.string(),
   })
   expect(() => readHookPayload(makePayload({ foo: 3 }), schema)).toThrow()
 })
 
-test('read hook payload union', () => {
+test('readHookPayload union', () => {
   const schema = z.union([
     z.object({
       foo: z.string(),
@@ -49,7 +49,7 @@ test('read hook payload union', () => {
   })
 })
 
-test('read hook payload union passthrough', () => {
+test('readHookPayload union passthrough', () => {
   const schema = z.union([
     z.object({
       foo: z.string(),
@@ -64,7 +64,7 @@ test('read hook payload union passthrough', () => {
   })
 })
 
-test('manual passthrough', () => {
+test('readHookPayload manual passthrough', () => {
   const schema = z.object({
     foo: z.string(),
     bar: z
@@ -93,4 +93,9 @@ test('manual passthrough', () => {
     },
     last: 'last-value',
   })
+})
+
+test('readHookPayload partial', () => {
+  const schema = z.object({ foo: z.string() }).partial()
+  expect(readHookPayload(makePayload({ bar: 'baz' }), schema)).toEqual({ bar: 'baz' })
 })
