@@ -4,3 +4,6 @@ build:
 
 lint:
 	@pnpm lint
+
+test:
+	@pnpm test
