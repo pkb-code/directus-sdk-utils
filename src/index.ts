@@ -143,16 +143,25 @@ export function readTriggerKeys(context: OperationContext) {
   return ((context.data as any).$trigger.keys as string[]) ?? []
 }
 
-type PayloadSchema = z.AnyZodObject | z.ZodUnion<[z.AnyZodObject, ...z.AnyZodObject[]]>
+type PayloadSchema =
+  | z.AnyZodObject
+  | z.ZodUnion<[z.AnyZodObject, ...z.AnyZodObject[]]>
+  | z.ZodArray<z.ZodUnion<[z.ZodString, z.ZodNumber]>, 'many'>
 export function readTriggerPayload<T extends PayloadSchema>(context: OperationContext, schema: T) {
   if (schema instanceof z.ZodObject) {
     return schema.passthrough().parse((context.data as any).$trigger.payload) as z.infer<T>
+  }
+  if (schema instanceof z.ZodArray) {
+    return schema.parse((context.data as any).$trigger.payload) as z.infer<T>
   }
   return z.union(schema.options.map((option) => option.passthrough()) as any).parse((context.data as any).$trigger.payload) as z.infer<T>
 }
 export function readHookPayload<T extends PayloadSchema>(context: HookContext, schema: T) {
   if (schema instanceof z.ZodObject) {
     return schema.passthrough().parse(context._payload) as z.infer<T>
+  }
+  if (schema instanceof z.ZodArray) {
+    return schema.parse(context._payload) as z.infer<T>
   }
   return z.union(schema.options.map((option) => option.passthrough()) as any).parse(context._payload) as z.infer<T>
 }
