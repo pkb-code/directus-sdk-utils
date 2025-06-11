@@ -99,3 +99,19 @@ test('readHookPayload partial', () => {
   const schema = z.object({ foo: z.string() }).partial()
   expect(readHookPayload(makePayload({ bar: 'baz' }), schema)).toEqual({ bar: 'baz' })
 })
+
+test('readHookPayload partial passthrough', () => {
+  const schema = z.object({ foo: z.string() }).partial()
+  expect(
+    readHookPayload(
+      makePayload({
+        foo: 'bar',
+        bar: 'baz',
+      }),
+      schema
+    )
+  ).toEqual({
+    foo: 'bar',
+    bar: 'baz',
+  })
+})
