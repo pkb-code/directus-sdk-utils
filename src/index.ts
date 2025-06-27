@@ -84,14 +84,15 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
     fn({
       filter: (event: string, handler: FilterHandler) => {
         register.filter(event, async (payload, meta, context) => {
+          let keys = meta.keys ?? []
           try {
-            if (meta.event.endsWith('items.delete')) {
-              meta.keys = payload
+            if (meta.event.endsWith('.items.delete')) {
+              keys = payload
             }
             return await handler(
               {
                 ...meta,
-                keys: meta.keys ?? [],
+                keys: keys,
               } as Meta,
               {
                 ...hookContext,
