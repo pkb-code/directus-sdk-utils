@@ -2,6 +2,7 @@ import type { ItemsService } from '@directus/api/services/items'
 import type { FilesService } from '@directus/api/services/files'
 import type { TranslationsService } from '@directus/api/services/translations'
 import type { NotificationsService } from '@directus/api/services/notifications'
+import type { UsersService } from '@directus/api/services/users'
 import { createError } from '@directus/errors'
 import type { ApiExtensionContext, EndpointExtensionContext, HookConfig as DirectusHookConfig, OperationContext, OperationHandler } from '@directus/extensions'
 import type { Accountability, Item } from '@directus/types'
@@ -197,3 +198,8 @@ type Ext = {
   message: string
 }
 export const FailedValidationError = createError<Ext>('FAILED_VALIDATION', 'invalid field', 400)
+
+export async function createUsersService(context: BasicContext) {
+  let { UsersService } = context.services
+  return new UsersService({ schema: await context.getSchema() }) as UsersService
+}
