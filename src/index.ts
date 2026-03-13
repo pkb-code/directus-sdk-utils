@@ -150,23 +150,18 @@ export function defineHook(fn: HookConfig): DirectusHookConfig {
 export function readTriggerKeys(context: OperationContext) {
   return ((context.data as any).$trigger.keys as string[]) ?? []
 }
-type AnyZodObject = z.ZodObject<any, any>
-type PayloadSchema = AnyZodObject | z.ZodUnion<any>
+type PayloadSchema = z.ZodObject | z.ZodUnion<readonly [z.ZodObject, ...z.ZodObject[]]>
 export function readTriggerPayload<T extends PayloadSchema>(context: OperationContext, schema: T) {
-  if ((schema as any) instanceof (z as any).ZodObject) {
-    return (schema as AnyZodObject).loose().parse((context.data as any).$trigger.payload) as z.infer<T>
+  if (schema instanceof z.ZodObject) {
+    return schema.loose().parse((context.data as any).$trigger.payload) as z.infer<T>
   }
-  return z
-    .union((schema as z.ZodUnion<any>).options.map((option: AnyZodObject) => option.loose()) as any)
-    .parse((context.data as any).$trigger.payload) as z.infer<T>
+  return z.union(schema.options.map((option) => option.loose()) as any).parse((context.data as any).$trigger.payload) as z.infer<T>
 }
 export function readHookPayload<T extends PayloadSchema>(context: HookContext, schema: T) {
-  if ((schema as any) instanceof (z as any).ZodObject) {
-    return (schema as AnyZodObject).loose().parse(context._payload) as z.infer<T>
+  if (schema instanceof z.ZodObject) {
+    return schema.loose().parse(context._payload) as z.infer<T>
   }
-  return z
-    .union((schema as z.ZodUnion<any>).options.map((option: AnyZodObject) => option.loose()) as any)
-    .parse(context._payload) as z.infer<T>
+  return z.union(schema.options.map((option) => option.loose()) as any).parse(context._payload) as z.infer<T>
 }
 
 export async function createTranslationsService(context: EndpointExtensionContext) {
